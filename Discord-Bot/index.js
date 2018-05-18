@@ -106,6 +106,7 @@ client.on('message', message => {
 		
 		message.channel.send(`<@${arrayMembers[x]}>`);
 		console.log(message.guild.members.get(`${client.users.array()[x]}`));
+		
 		//message.channel.send(`<@${client.users.array()[x]}>`);
 	}
 	else if (message.content === `${prefix}random`) {
