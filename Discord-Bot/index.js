@@ -13,6 +13,7 @@ var counter2 = 0;
 var counter3 = 0;
 
 var boolboi = false;
+var arrayMembers = [];
 // when the client is ready, run this code
 // this event will trigger whenever your bot:
 // - finishes logging in
@@ -83,6 +84,33 @@ client.on('message', message => {
       		message.react("👍");
 
     	});
+	}else if (message.content === `${prefix}roll`) {
+
+		/*for (user of client.users) {
+			console.log(user[1].username);
+		}
+		message.channel.send('<@153240057778667521>');*/
+		var i;
+		var count = 0;
+		for (i in client.users.array()) {
+			var User = client.users.array()[i];
+			arrayMembers[i] = User.id; 
+			console.log(User.username);
+			console.log(User.id);
+			count++;
+		}
+		var x = Math.floor(Math.random() * (count));
+		console.log(i);
+		console.log(count);
+		console.log(x);
+		
+		message.channel.send(`<@${arrayMembers[x]}>`);
+		console.log(message.guild.members.get(`${client.users.array()[x]}`));
+		//message.channel.send(`<@${client.users.array()[x]}>`);
+	}
+	else if (message.content === `${prefix}random`) {
+		var ran = Math.floor(Math.random()*100);
+		message.channel.send(`Your random number is: ${ran}`);
 	}
 });
 
