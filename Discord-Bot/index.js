@@ -35,9 +35,38 @@ client.on('message', async message => {
 
 
     //if (message.content === `${prefix}ping`) {
-    if (message.content.startsWith(`${prefix}ping`)) {
+   /* if (message.content === `${prefix}ping`) {
     	// send back "Pong." to the channel the message was sent in
     	message.channel.send('Pong.');
+    }*/
+    if (message.content.startsWith(`${prefix}ping`)) {
+    	// send back "Pong." to the channel the message was sent in
+
+    	let kUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+   		if(!kUser) return message.channel.send("Pong.");
+
+   		let userPinged = args[0];
+   		let number = args[1];
+   		let counter = 0;
+
+   		console.log(userPinged);
+   		console.log(number);
+
+   		if (number > 5) {
+   			message.channel.send('This number is too large.');
+   			return;
+   		}
+
+   		while (counter != number) {
+
+   			console.log(counter);
+
+   			//setTimeout(function() { message.channel.send(`${kUser}`); }, 5000);
+   			//message.channel.send(`${kUser}`);
+   			message.channel.send(`Summoning ${kUser}`);
+			counter++;
+   		}
+    	
 	}
 	//else if (message.content === `${prefix}beep`) {
 	else if (message.content.startsWith(`${prefix}beep`)) {
@@ -51,7 +80,7 @@ client.on('message', async message => {
 		message.channel.send(`You have said 1, ${counter1} time(s).\n`);
 	}
 	else if (message.content === '2' && boolboi) {
-		counter2++;
+		counter2+5
 		message.channel.send(`You have said 2, ${counter2} time(s).\n`);
 	}
 	else if (message.content === '3' && boolboi) {
@@ -185,7 +214,7 @@ client.on('message', async message => {
 
 		member.addRole(role).catch(console.error);
 	}
-	else if (message.content.startsWith(`${prefix}bronze`)) {
+	else if (message.content.startsWith(`${prefix}remove`)) {
 
 		let roleName = args[1];
 		let role = message.guild.roles.find("name", roleName);
@@ -211,6 +240,22 @@ client.on('message', async message => {
 		})
 
 	}
+	else if (message.content === `${prefix}help`) {
+
+		message.channel.send("same");
+	}
+	else if (message.content === `${prefix}no`) {
+
+		message.channel.send("u");
+	}
+	else if (message.content === `${prefix}NO`) {
+
+		message.channel.send("U");
+	}
+	else if (message.content.startsWith("nani")) {
+
+		message.channel.send("WAT");
+	}
 
 });
 
@@ -231,7 +276,9 @@ client.on("guildMemberRemove", (member) => {
 	guild.channels.find("name", "welcome").send("So sad to see you go, @" + member.id);
 	if (newUsers[guild.id].has(member.id)) newUsers.delete(member.id);
 
-});
+}
+
+);
 // login to Discord with your app's token
 //client.login(config.token);
 client.login(token);
