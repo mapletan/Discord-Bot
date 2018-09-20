@@ -8,6 +8,9 @@ const { prefix, token } = require('./config.json');
 // create a new Discord client
 const client = new Discord.Client();
 
+// add additional files here
+const timeJS = require('./commands/time.js');
+
 var counter1 = 0;
 var counter2 = 0;
 var counter3 = 0;
@@ -20,8 +23,21 @@ const newUsers = [];
 // - finishes logging in
 // - reconnects after disconnecting
 client.on('ready', () => {
+
     console.log('Ready!');
-    client.user.setUsername("Derp")
+    client.user.setUsername('Derp');
+
+    let embed = new Discord.RichEmbed()
+    		.setTitle('Derp Bot is online! :smile:')
+    		.setColor('RANDOM')
+    		.setTimestamp(new Date())
+
+    try {
+    	client.guilds.forEach(guild => guild.channels.find('name','general').send(embed));
+    } catch (err) {
+    	console.log('Could not send message about Derp being online to ' + guild.name);
+    }
+
 });
 
 client.on('message', async message => {
@@ -32,6 +48,7 @@ client.on('message', async message => {
 
 	let messageArray = message.content.split(" ");
 	let args = messageArray.slice(1);
+	message.content = message.content.toLowerCase();
 
 
     //if (message.content === `${prefix}ping`) {
@@ -56,13 +73,13 @@ client.on('message', async message => {
    			message.channel.send('This number is too large.');
    			return;
    		}
+   		if (number == null) {
+   			message.channel.send(`Summoning ${kUser}`);
+   			return;
+   		}
 
    		while (counter != number) {
 
-   			console.log(counter);
-
-   			//setTimeout(function() { message.channel.send(`${kUser}`); }, 5000);
-   			//message.channel.send(`${kUser}`);
    			message.channel.send(`Summoning ${kUser}`);
 			counter++;
    		}
@@ -75,7 +92,7 @@ client.on('message', async message => {
 	else if (message.content === `${prefix}server`) {
     	message.channel.send(`This server's name is: ${message.guild.name}\nTotal members: ${message.guild.memberCount}`);
 	}
-	else if (message.content === '1' && boolboi) {
+	/*else if (message.content === '1' && boolboi) {
 		counter1++;
 		message.channel.send(`You have said 1, ${counter1} time(s).\n`);
 	}
@@ -98,7 +115,7 @@ client.on('message', async message => {
 	else if (message.content === `${prefix}end`) {
 		boolboi = false;
 		message.channel.send('Ending count...');
-	}
+	}*/
 	else if (message.content.startsWith(`${prefix}poll`)) {
 
     	message.channel.send({
@@ -152,19 +169,19 @@ client.on('message', async message => {
 
 		let kUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
    		if(!kUser) return message.channel.send("Can't find user!");
-    	let kReason = args.join(" ").slice(22);
-    	if(!kReason) kReason = "No reason"
-    	if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send("No can do pal!");
-    	if(!kUser.hasPermission("MANAGE_MESSAGES")) return message.channel.send("That person can't be kicked!");
+    	let kReason = args.join(' ').slice(22);
+    	if(!kReason) kReason = 'No reason'
+    	if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send('No can do pal!');
+    	if(!kUser.hasPermission('MANAGE_MESSAGES')) return message.channel.send("That person can't be kicked!");
 
     	let kickEmbed = new Discord.RichEmbed()
-    	.setDescription("~Kick~")
-    	.setColor("#e56b00")
-    	.addField("Kicked User", `${kUser} with ID ${kUser.id}`)
-    	.addField("Kicked By", `<@${message.author.id}> with ID ${message.author.id}`)
-    	.addField("Kicked In", message.channel)
-    	.addField("Time", message.createdAt)
-    	.addField("Reason", kReason); 
+    	.setDescription('Kick~')
+    	.setColor('#e56b00')
+    	.addField('Kicked User', `${kUser} with ID ${kUser.id}`)
+    	.addField('Kicked By', `<@${message.author.id}> with ID ${message.author.id}`)
+    	.addField('Kicked In', message.channel)
+    	.addField('Time', message.createdAt)
+    	.addField('Reason', kReason); 
 
     	/*message.channel.send({
     		embed: {
@@ -208,8 +225,8 @@ client.on('message', async message => {
 	else if (message.content.startsWith(`${prefix}addrole`)) {
 
 		let roleName = args[1];
-		let role = message.guild.roles.find("name", roleName);
-		if(!role) return message.channel.send("That role does not exist!");
+		let role = message.guild.roles.find('name', roleName);
+		if(!role) return message.channel.send('That role does not exist!');
 		let member = message.mentions.members.first() || message.guild.members.get(args[0]);
 
 		member.addRole(role).catch(console.error);
@@ -217,8 +234,8 @@ client.on('message', async message => {
 	else if (message.content.startsWith(`${prefix}remove`)) {
 
 		let roleName = args[1];
-		let role = message.guild.roles.find("name", roleName);
-		if(!role) return message.channel.send("That role already exists!");
+		let role = message.guild.roles.find('name', roleName);
+		if(!role) return message.channel.send("That role doesn't exists!");
 		let member = message.mentions.members.first();
 
 		member.removeRole(role).catch(console.error);
@@ -227,8 +244,8 @@ client.on('message', async message => {
 	else if (message.content.startsWith(`${prefix}createrole`)) {
 
 		let roleName = args[1];
-		let role = message.guild.roles.find("name", roleName);
-		if(!role) return message.channel.send("That role already exists!");
+		let role = message.guild.roles.find('name', roleName);
+		if(!role) return message.channel.send('That role already exists!');
 
 		message.guild.createRole({
 
@@ -240,21 +257,155 @@ client.on('message', async message => {
 		})
 
 	}
-	else if (message.content === `${prefix}help`) {
+	else if (message.content.toLowerCase().startsWith(`${prefix}help`)) {
 
-		message.channel.send("same");
+		message.channel.send('same');
+
 	}
-	else if (message.content === `${prefix}no`) {
+	if ((message.content.includes(" no ")) || (message.content === "no") || (message.content.endsWith(" no")) || (message.content.startsWith("no "))) {
 
-		message.channel.send("u");
+	    message.channel.send("u");
+
 	}
-	else if (message.content === `${prefix}NO`) {
 
-		message.channel.send("U");
+	if ((message.content.includes(" nani ")) || (message.content === "nani") || (message.content.endsWith(" nani")) || (message.content.startsWith("nani "))) {
+
+	
+		message.channel.send("wat");
+	
 	}
-	else if (message.content.startsWith("nani")) {
+	if ((message.content.includes(" hue ")) || (message.content === "hue") || (message.content.endsWith(" hue")) || (message.content.startsWith("hue "))) {
 
-		message.channel.send("WAT");
+		message.channel.send("huehuehue");
+		
+	}
+	if ((message.content.includes(" wot ")) || (message.content === "wot") || (message.content.endsWith(" wot")) || (message.content.startsWith("wot "))) {
+
+		message.channel.send("brownies");
+
+	}
+	if ((message.content.includes(" f3 ")) || (message.content === "f3") || (message.content.endsWith(" f3")) || (message.content.startsWith("f3 "))) {
+
+		message.channel.send("no me! i f3 u!");
+	}
+	if ((message.content.includes(" :3 ")) || (message.content === ":3") || (message.content.endsWith(" :3")) || (message.content.startsWith(":3 "))) {
+
+		message.channel.send("aww, so kawaii~");
+	}
+	if ((message.content.includes(" same ")) || (message.content === "same") || (message.content.endsWith(" same")) || (message.content.startsWith("same "))) {
+
+		message.channel.send("also same.");
+	}
+	if (message.content.toLowerCase().includes("how about") || 
+		(message.content.toLowerCase().includes("haow about")) || 
+		(message.content.toLowerCase().includes("haow aboot"))) {
+
+		message.channel.send("how about no");
+	}
+	if ((message.content.includes(" oof ")) || (message.content === "oof") || (message.content.endsWith(" oof")) || (message.content.startsWith("oof "))) {
+
+		message.channel.send("wotbrownies");
+	}
+	if ((message.content.includes(" willord ")) || (message.content === "willord") || (message.content.endsWith(" willord")) || (message.content.startsWith("willord "))) {
+
+		message.channel.send("Jay eats pie");
+	}
+	if ((message.content.includes(" gg ")) || (message.content === "gg") || (message.content.endsWith(" gg")) || (message.content.startsWith("gg "))) {
+
+		message.channel.send("wp");
+	}
+	if (message.content.toLowerCase().includes("sleep")) {
+
+		message.channel.send(`gudnite <@${message.author.id}> :zzz: :zzz: :zzz:`);
+	}
+	if (message.content.toLowerCase().includes("holy moly")) {
+
+		message.channel.send("gotta bake dat ravioli");
+	}
+	if ((message.content.toLowerCase().includes("feelsbad")) || (message.content.toLowerCase().includes("feelsbadman"))) {
+
+		message.channel.send("so sad");
+	}
+	if ((message.content.toLowerCase().includes("pls")) || 
+		(message.content.toLowerCase().includes("please")) || (message.content.toLowerCase().includes("plz"))) {
+
+		message.channel.send("pretty pretty pleaseeeee!");
+
+		var link = 'https://cdn.discordapp.com/attachments/174499265446543361/489652408675336193/SOPwao.png';
+		const em = new Discord.RichEmbed().setImage(link);
+		message.channel.send(em);
+	}
+	if (message.content.toLowerCase().includes("what the heck")) {
+
+		message.channel.send(`Watch your language, <@${message.author.id}>!`);
+
+		var link = 'https://i.imgur.com/DD4Xta6.gif';
+		const em = new Discord.RichEmbed().setImage(link);
+		message.channel.send(em);
+
+	}
+	if (message.content.toLowerCase().includes("O_O")) {
+
+		message.channel.send("YA DAS RITE");
+	}
+	if (message.content.toLowerCase().includes("wtfish")) {
+
+		message.channel.send("Yum gimme that fish, Jay :fish: :tropical_fish: :blowfish:");
+
+	}
+	if (message.content === "...") {
+
+		message.channel.send("-criket sounds-")
+	}
+	if (message.content.toLowerCase().startsWith(`${prefix}math`)) {
+
+
+		let num1 = args[0];
+		let op1 = args[1];
+		let num2 = args[2];
+		let ans = 0;
+
+		console.log(num1);
+		console.log(op1);
+		console.log(num2);
+
+		if (op1 == '+') {
+
+			ans = +num1 + +num2;
+			//console.log(ans);
+
+			//message.channel.send(```assa ${num1} ${op1} ${num2} ${ans}```);
+		}
+		else if (op1 == '-') {
+
+			ans = +num1 - +num2;
+		}
+		else if (op1 == '*') {
+
+			ans = +num1 * +num2;
+		}
+		else if (op1 == '/') {
+
+			ans = +num1 / +num2;
+		}
+
+		message.channel.send({embed: {
+
+			color: 3447003,
+			description: `${num1} ${op1} ${num2} = ${ans}`
+		}});
+
+
+	}
+	if (message.content === "listemojis") {
+  		const emojiList = message.guild.emojis.map(e=>e.toString()).join(" ");
+ 		message.channel.send(emojiList);
+ 		console.log(emojiList);
+	}
+	if(message.content === `${prefix}time`) {
+
+		message.channel.send(timeJS.timeBot());
+
 	}
 
 });
@@ -266,14 +417,14 @@ client.on("guildMemberAdd", (member) => {
 	newUsers[guild.id].set(member.id, member.user);
 
 	const userlist = newUsers[guild.id].map(u => u.toString()).join(" ");
-	guild.channels.find("name", "welcome").send("Welcome to the server, " + userlist + "!");
+	guild.channels.find('name', 'welcome').send('Welcome to the server, ' + userlist + '!');
 	newUsers[guild.id].clear();
 
 });
 
 client.on("guildMemberRemove", (member) => {
 	const guild = member.guild;
-	guild.channels.find("name", "welcome").send("So sad to see you go, @" + member.id);
+	guild.channels.find('name', 'welcome').send('So sad to see you go, @' + member.id);
 	if (newUsers[guild.id].has(member.id)) newUsers.delete(member.id);
 
 }
