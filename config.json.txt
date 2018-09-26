@@ -1,0 +1,5 @@
+{
+    "prefix": ".",
+    "token": "Your Token Here",
+    "client_id": "Your Client ID Here"
+}
