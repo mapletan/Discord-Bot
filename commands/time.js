@@ -1,12 +1,13 @@
 // ***********************************************************************************
 // 
-// File name:   time.js
-// Function:    Tells the time in PDT, HST, in the Phillipines, and Sydney, Australia
-// Format:      Day of week, DD MMMM YYYY HH:MM AM/PM
-// How to use:  Call this function in the main file (index.js) by initializing at the top:
-//              const timeJS = require('./commands/time.js');
-//              Use by calling timeBot by:
-//              timeJS.timeBot();
+// File name:   	time.js
+// Function:    	Tells the time in PDT, HST, in the Phillipines, and Sydney, Australia
+// Input Format: 	${prefix}time
+// Output Format:   Day of week, DD MMMM YYYY HH:MM AM/PM
+// How to use:  	Call this function in the main file (index.js) by initializing at the top:
+//              	const timeJS = require('./commands/time.js');
+//              	Use by calling timeBot by:
+//              	timeJS.timeBot();
 //
 // ***********************************************************************************
 

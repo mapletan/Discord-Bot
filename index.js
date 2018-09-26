@@ -10,6 +10,10 @@ const client = new Discord.Client();
 
 // add additional files here
 const timeJS = require('./commands/time.js');
+const imgurJS = require('./commands/imgur.js');
+
+// node-fetch
+//const fetch = require('node-fetch');
 
 var counter1 = 0;
 var counter2 = 0;
@@ -27,7 +31,7 @@ client.on('ready', () => {
     console.log('Ready!');
     client.user.setUsername('Derp');
 
-    let embed = new Discord.RichEmbed()
+    /*let embed = new Discord.RichEmbed()
     		.setTitle('Derp Bot is online! :smile:')
     		.setColor('RANDOM')
     		.setTimestamp(new Date())
@@ -36,7 +40,7 @@ client.on('ready', () => {
     	client.guilds.forEach(guild => guild.channels.find('name','general').send(embed));
     } catch (err) {
     	console.log('Could not send message about Derp being online to ' + guild.name);
-    }
+    }*/
 
 });
 
@@ -355,7 +359,7 @@ client.on('message', async message => {
 	}
 	if (message.content === "...") {
 
-		message.channel.send("-criket sounds-")
+		message.channel.send("-cricket sounds-")
 	}
 	if (message.content.toLowerCase().startsWith(`${prefix}math`)) {
 
@@ -407,6 +411,74 @@ client.on('message', async message => {
 		message.channel.send(timeJS.timeBot());
 
 	}
+	if (message.content === 'ofd') {
+
+		//const em = https://i.imgur.com/IDYevDg.gif
+
+		var link = 'https://i.imgur.com/IDYevDg.gif';
+		const em = new Discord.RichEmbed().setImage(link);
+		console.log(link);
+		message.channel.send(em);
+	}
+	if(message.content.startsWith(`${prefix}imgur`)) {
+
+		let search = args[0];
+		let link;
+
+		if (search == null) {
+			message.channel.send('error: not enough arguments');
+			return;
+		}
+		else if (args.length > 1) {
+			message.channel.send('error: too many arguments');
+			return;
+		}
+		console.log(search);
+
+		imgurJS.imgurBot(search).then(json => {
+			
+			let lengthOfImagesInData = json.data.length;
+			lengthOfImagesInData = Math.floor((Math.random() * lengthOfImagesInData));
+			console.log(lengthOfImagesInData);
+
+			if (lengthOfImagesInData <= 0) {
+
+				message.channel.send(`Error: '${search}' had no results`);
+				return;
+			}
+
+			if (json.data[lengthOfImagesInData].is_album) {
+
+				console.log('is album');
+
+				let lengthOfImagesInAlbum = json.data[lengthOfImagesInData].images.length;
+				console.log(lengthOfImagesInAlbum);
+				lengthOfImagesInAlbum = Math.floor((Math.random() * lengthOfImagesInAlbum));
+				console.log(lengthOfImagesInAlbum);
+
+				link = json.data[lengthOfImagesInData].images[lengthOfImagesInAlbum].link;
+				console.log(link);
+
+				let em = new Discord.RichEmbed().setImage(link);
+				message.channel.send(em);
+
+			}
+			else {
+
+				console.log('is not album');
+
+				link = json.data[lengthOfImagesInData].link;
+				console.log(link);
+
+				let em = new Discord.RichEmbed().setImage(link);
+				message.channel.send(em);
+			}
+
+		}
+	);
+
+	return;
+	}
 
 });
 
@@ -420,14 +492,15 @@ client.on("guildMemberAdd", (member) => {
 	guild.channels.find('name', 'welcome').send('Welcome to the server, ' + userlist + '!');
 	newUsers[guild.id].clear();
 
-});
+	}
+);
 
 client.on("guildMemberRemove", (member) => {
 	const guild = member.guild;
 	guild.channels.find('name', 'welcome').send('So sad to see you go, @' + member.id);
 	if (newUsers[guild.id].has(member.id)) newUsers.delete(member.id);
 
-}
+	}
 
 );
 // login to Discord with your app's token
