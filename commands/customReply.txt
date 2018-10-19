@@ -1,0 +1,5 @@
+{
+
+	"custom trigger 1": "custom response 1",
+	"custom trigger 2": "custom response 2"
+}

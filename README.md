@@ -36,8 +36,9 @@ Currently includes:
    with the callback URL:
    - https://www.getpostman.com/oauth2/callback
 3. Rename `config.json.txt` to `config.json` and add your bot token and client ID in the quotations
-4. Use Command Prompt (cmd) to navigate to the folder where `index.js` is
-5. Launch the bot with
+4. Rename `customReply.txt` to `customReply.json` and add in your own triggers and responses
+5. Use Command Prompt (cmd) to navigate to the folder where `index.js` is
+6. Launch the bot with
 
       ```node index.js```
 ### Tested and Developed on
