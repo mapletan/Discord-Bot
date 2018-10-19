@@ -19,7 +19,13 @@ const {client_id} = require('./../config.json');
 
 exports.imgurBot = function(search) {
 
-	let url = 'https://api.imgur.com/3/gallery/search/top/1/?q=' + search;
+	let url = 'https://api.imgur.com/3/gallery/search/top/top/all/?q=' +search[0];
+	
+	for (var i = 1; i < search.length; i++) {
+
+		url += '%20' + search[i];
+
+	}
 
 	return fetch(url, {headers: {
 			'Authorization': 'Client-ID ' + client_id

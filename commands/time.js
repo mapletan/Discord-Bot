@@ -28,7 +28,7 @@ exports.timeBot = function() {
 	PST.setUTCHours(PST.getUTCHours() - 7);
 	HST.setUTCHours(HST.getUTCHours() - 10);
 	Phill.setUTCHours(Phill.getUTCHours() + 8);
-	AEST.setUTCHours(AEST.getUTCHours() + 10);
+	AEST.setUTCHours(AEST.getUTCHours() + 11);
 
 	const PST_AMPM = checkAMPM(PST);
 	const HST_AMPM = checkAMPM(HST);

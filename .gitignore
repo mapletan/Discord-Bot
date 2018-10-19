@@ -1,2 +1,11 @@
-# Ignore the config file that has the token
+# Personal config file
 config.json
+
+# SQL DB
+score.sqlite
+
+# Dependency directories
+node_modules/
+
+# Custom Replies
+commands/customReply.json
