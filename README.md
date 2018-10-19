@@ -17,7 +17,7 @@ Currently includes:
 - display time in 4 different timezones
 - miscellaneous responses to certain messages
 - random image grab from Imgur API based on search query
-- point and leveling system with cooldown for messages beinng recorded as points; results saved in local SQLite DB
+- point and leveling system with cooldown for messages being recorded as points, with results saved in local SQLite DB
 
 ## Prerequisites
 - Node.js (version 7.6 or higher)
