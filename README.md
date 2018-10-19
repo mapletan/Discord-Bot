@@ -16,12 +16,14 @@ Currently includes:
 - basic math functionality (+ - / *)
 - display time in 4 different timezones
 - miscellaneous responses to certain messages
-- Random image grab from Imgur API based on search query
+- random image grab from Imgur API based on search query
+- point and leveling system with cooldown for messages beinng recorded as points; results saved in local SQLite DB
 
 ## Prerequisites
 - Node.js (version 7.6 or higher)
 - Discord.js
 - node-fetch module (for Imgur API)
+- SQLite Client for Node.js Apps
 
 ## Installation
 1. Create a Discord application and a Bot User here:
